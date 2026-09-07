@@ -1,0 +1,665 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+}
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 18px;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+header {
+    margin-bottom: 14px;
+}
+
+header h1 {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+header p {
+    color: #666;
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   TABS
+========================================== */
+
+.tab-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #e2e5e9;
+}
+
+.tab-btn {
+    padding: 9px 18px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+}
+
+.tab-btn:hover {
+    color: #2563eb;
+}
+
+.tab-btn.active {
+    color: #2563eb;
+    border-bottom: 2px solid #2563eb;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+
+/* ==========================================
+   METRIC CARDS
+========================================== */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.metric-card {
+    background: white;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.metric-card h3 {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.metric-card p {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   PANELS
+========================================== */
+
+.panel {
+    background: white;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.panel h2 {
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.compact-panel {
+    padding: 12px 16px;
+}
+
+
+/* ==========================================
+   SIDE-BY-SIDE DASHBOARD GRID
+========================================== */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.chart-card.panel {
+    margin-bottom: 12px;
+}
+
+
+/* ==========================================
+   PREDICTION SUMMARY
+========================================== */
+
+.prediction-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.summary-item span {
+    color: #666;
+    font-size: 12px;
+}
+
+.summary-item strong {
+    font-size: 20px;
+}
+
+.chart-container {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* ==========================================
+   CANVAS
+========================================== */
+
+#predictionChart {
+    width: 100%;
+    height: 140px;
+    display: block;
+}
+
+#latencyChart {
+    width: 100%;
+    height: 180px;
+    display: block;
+}
+
+#anomalyChart {
+    display: none; /* redundant with the numeric summary above; hidden to save vertical space */
+}
+
+
+/* ==========================================
+   SYSTEM STATUS
+========================================== */
+
+.system-status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.status-item {
+    background: #f8f9fa;
+    padding: 10px 12px;
+    border-radius: 8px;
+}
+
+.status-item span {
+    display: block;
+    color: #666;
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+
+.status-item strong {
+    font-size: 14px;
+}
+
+#overallStatus {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   ANOMALY MONITORING
+========================================== */
+
+.small-note {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.anomaly-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.anomaly-summary div {
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.anomaly-summary span {
+    display: block;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.anomaly-summary strong {
+    display: block;
+    font-size: 18px;
+}
+
+#anomalyStatus {
+    font-weight: 600;
+}
+
+/* Compact list: each .anomaly-item becomes a single row instead of a
+   tall card. If script.js builds richer markup, this still keeps it tight. */
+.anomaly-list-compact {
+    max-height: 130px;
+    overflow-y: auto;
+}
+
+.anomaly-item {
+    margin-top: 6px;
+    padding: 6px 10px;
+    border-left: 4px solid #f44336;
+    background: #fff5f5;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.anomaly-item p {
+    margin: 0;
+    display: inline;
+}
+
+.anomaly-item p::after {
+    content: " · ";
+    color: #ccc;
+}
+
+.anomaly-item p:last-child::after {
+    content: "";
+}
+
+
+/* ==========================================
+   PREDICTION TESTING
+========================================== */
+
+.section-description {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 14px;
+}
+
+.prediction-form {
+    margin-top: 6px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+}
+
+.predict-button {
+    margin-top: 18px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 7px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.predict-button:hover {
+    opacity: 0.9;
+}
+
+
+/* ==========================================
+   PREDICTION RESULT
+========================================== */
+
+.prediction-result {
+    display: block;
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    text-align: center;
+    min-height: 60px;
+}
+
+.result-box h3 {
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.prediction-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.prediction-details p {
+    padding: 10px;
+    background: white;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.error-box {
+    color: #dc2626;
+}
+
+
+/* ==========================================
+   FEEDBACK
+========================================== */
+
+.feedback-section {
+    margin-top: 18px;
+    padding: 16px 0 0;
+    border-top: 1px solid #ddd;
+}
+
+.feedback-section h3 {
+    margin-bottom: 6px;
+    font-size: 15px;
+}
+
+.feedback-section > p {
+    font-size: 13px;
+    color: #666;
+}
+
+.feedback-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.feedback-buttons button {
+    flex: 1;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.stay-button {
+    background: #16a34a;
+}
+
+.churn-button {
+    background: #dc2626;
+}
+
+.feedback-buttons button:hover {
+    opacity: 0.9;
+}
+
+#feedbackResult {
+    margin-top: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+
+/* ==========================================
+   MODEL PERFORMANCE
+========================================== */
+
+.performance-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.performance-card {
+    background: #f8f9fa;
+    padding: 14px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.performance-card span {
+    display: block;
+    color: #666;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+
+.performance-card strong {
+    display: block;
+    font-size: 20px;
+}
+
+#feedbackCount {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+#performanceStatus {
+    padding: 10px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 900px) {
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .system-status-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .performance-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .prediction-summary {
+        flex-wrap: wrap;
+    }
+
+    .chart-container {
+        min-width: 100%;
+        order: 3;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .container {
+        width: 95%;
+        padding: 12px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .system-status-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .performance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .anomaly-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .prediction-details {
+        grid-template-columns: 1fr;
+    }
+
+    .feedback-buttons {
+        flex-direction: column;
+    }
+
+    .chart-container {
+        min-width: 100%;
+    }
+}
+
+/* ==========================================
+   ALERT SYSTEM
+========================================== */
+
+.alert-panel {
+    border-left: 5px solid #2563eb;
+}
+
+.alert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.alert-header h2 {
+    margin-bottom: 5px;
+}
+
+.alert-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.alert-badge {
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.alert-badge.healthy {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.alert-badge.warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.alert-badge.critical {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.alert-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.alert-item.warning {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    color: #92400e;
+}
+
+.alert-item.critical {
+    background: #fef2f2;
+    border-left: 4px solid #dc2626;
+    color: #991b1b;
+}
+
+.alert-item.info {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    color: #1e40af;
+}
+
+.no-alert {
+    padding: 18px;
+    text-align: center;
+    background: #f0fdf4;
+    border-radius: 8px;
+    color: #166534;
+    font-weight: 600;
+}

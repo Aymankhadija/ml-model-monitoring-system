@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ML Model Monitoring Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ==========================================
+         HEADER
+    ========================================== -->
+
+    <header>
+        <h1>ML Model Monitoring Dashboard</h1>
+
+        <p>
+            Real-time monitoring of customer churn prediction model
+        </p>
+    </header>
+
+
+    <!-- ==========================================
+         TABS
+    ========================================== -->
+
+    <div class="tab-bar">
+        <button type="button" class="tab-btn active" data-tab="monitoring" onclick="switchTab('monitoring')">
+            Monitoring
+        </button>
+        <button type="button" class="tab-btn" data-tab="testing" onclick="switchTab('testing')">
+            Test & Feedback
+        </button>
+    </div>
+
+
+    <!-- ==========================================
+         TAB: MONITORING
+    ========================================== -->
+
+    <div id="tab-monitoring" class="tab-panel active">
+
+        <!-- MAIN METRICS -->
+        <section class="metrics-grid">
+
+            <div class="metric-card">
+                <h3>Total Requests</h3>
+                <p id="totalRequests">0</p>
+            </div>
+
+            <div class="metric-card">
+                <h3>Churn Rate</h3>
+                <p id="churnRate">0%</p>
+            </div>
+
+            <div class="metric-card">
+                <h3>Average Latency</h3>
+                <p id="avgLatency">0 ms</p>
+            </div>
+
+            <div class="metric-card">
+                <h3>Average Churn Probability</h3>
+                <p id="avgProbability">0</p>
+            </div>
+
+        </section>
+
+
+        <!-- SYSTEM STATUS (compact strip) -->
+        <section class="panel compact-panel">
+
+            <div class="system-status-grid">
+
+                <div class="status-item">
+                    <span>API Status</span>
+                    <strong id="apiStatus">Checking...</strong>
+                </div>
+
+                <div class="status-item">
+                    <span>Latency Status</span>
+                    <strong id="latencyStatus">Checking...</strong>
+                </div>
+
+                <div class="status-item">
+                    <span>Anomaly Status</span>
+                    <strong id="systemAnomalyStatus">Checking...</strong>
+                </div>
+
+                <div class="status-item">
+                    <span>Model Performance</span>
+                    <strong id="modelStatus">Checking...</strong>
+                </div>
+
+            </div>
+
+            <div id="overallStatus">
+                Checking overall system status...
+            </div>
+
+        </section>
+         <!-- ==========================================
+     ALERT SYSTEM
+========================================== -->
+
+<div class="panel alert-panel">
+
+    <div class="alert-header">
+
+        <div>
+            <h2>🚨 Alert System</h2>
+            <p>Real-time monitoring alerts</p>
+        </div>
+
+        <div id="alertBadge" class="alert-badge">
+            Checking...
+        </div>
+
+    </div>
+
+    <div id="alertContainer">
+
+        <div class="no-alert">
+            🟢 Checking system status...
+        </div>
+
+    </div>
+
+</div>
+
+        <!-- PREDICTION SUMMARY + ANOMALY MONITORING side-by-side -->
+        <div class="dashboard-grid">
+
+            <!-- PREDICTION SUMMARY -->
+            <section class="panel chart-card">
+
+                <h2>Prediction Summary</h2>
+
+                <div class="prediction-summary">
+
+                    <div class="summary-item">
+                        <span>Stay Predictions</span>
+                        <strong id="stayPredictions">0</strong>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Churn Predictions</span>
+                        <strong id="churnPredictions">0</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ANOMALY MONITORING -->
+            <section class="panel chart-card">
+
+                <h2>Anomaly Monitoring</h2>
+
+                <p id="anomalyThreshold" class="small-note">
+                    Anomaly Threshold: 100 ms
+                </p>
+
+                <div class="anomaly-summary">
+
+                    <div>
+                        <span>Total Anomalies</span>
+                        <strong id="totalAnomalies">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Normal Requests</span>
+                        <strong id="normalRequests">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Anomaly Rate</span>
+                        <strong id="anomalyRate">0%</strong>
+                    </div>
+
+                </div>
+
+                <div id="anomalyStatus" class="small-note"></div>
+
+                <div id="anomalyList" class="anomaly-list-compact"></div>
+
+            </section>
+
+        </div>
+
+
+        <!-- PREDICTION LATENCY -->
+        <section class="panel">
+
+            <h2>Prediction Latency</h2>
+
+            <canvas id="latencyChart"></canvas>
+
+        </section>
+
+    </div>
+
+
+    <!-- ==========================================
+         TAB: TESTING & FEEDBACK
+    ========================================== -->
+
+    <div id="tab-testing" class="tab-panel">
+
+        <!-- PREDICTION TESTING -->
+        <section class="panel prediction-panel">
+
+            <h2>Prediction Testing & Feedback</h2>
+
+            <p class="section-description">
+                Enter customer information and test the churn prediction model.
+            </p>
+
+
+            <!-- CUSTOMER INPUT FORM -->
+
+            <div class="prediction-form">
+
+                <div class="form-grid">
+
+                    <!-- AGE -->
+                    <div class="form-group">
+                        <label for="inputAge">Age</label>
+                        <input type="number" id="inputAge" value="30" min="1">
+                    </div>
+
+                    <!-- GENDER -->
+                    <div class="form-group">
+                        <label for="inputGender">Gender</label>
+                        <select id="inputGender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <!-- TENURE -->
+                    <div class="form-group">
+                        <label for="inputTenure">Tenure</label>
+                        <input type="number" id="inputTenure" value="12" min="0">
+                    </div>
+
+                    <!-- USAGE FREQUENCY -->
+                    <div class="form-group">
+                        <label for="inputUsageFrequency">Usage Frequency</label>
+                        <input type="number" id="inputUsageFrequency" value="10" min="0">
+                    </div>
+
+                    <!-- SUPPORT CALLS -->
+                    <div class="form-group">
+                        <label for="inputSupportCalls">Support Calls</label>
+                        <input type="number" id="inputSupportCalls" value="2" min="0">
+                    </div>
+
+                    <!-- PAYMENT DELAY -->
+                    <div class="form-group">
+                        <label for="inputPaymentDelay">Payment Delay</label>
+                        <input type="number" id="inputPaymentDelay" value="0" min="0">
+                    </div>
+
+                    <!-- SUBSCRIPTION TYPE -->
+                    <div class="form-group">
+                        <label for="inputSubscriptionType">Subscription Type</label>
+                        <select id="inputSubscriptionType">
+                            <option value="Basic">Basic</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Premium">Premium</option>
+                        </select>
+                    </div>
+
+                    <!-- CONTRACT LENGTH -->
+                    <div class="form-group">
+                        <label for="inputContractLength">Contract Length</label>
+                        <select id="inputContractLength">
+                            <option value="Monthly">Monthly</option>
+                            <option value="Quarterly">Quarterly</option>
+                            <option value="Annual">Annual</option>
+                        </select>
+                    </div>
+
+                    <!-- TOTAL SPEND -->
+                    <div class="form-group">
+                        <label for="inputTotalSpend">Total Spend</label>
+                        <input type="number" id="inputTotalSpend" value="500" min="0" step="0.01">
+                    </div>
+
+                    <!-- LAST INTERACTION -->
+                    <div class="form-group">
+                        <label for="inputLastInteraction">Last Interaction</label>
+                        <input type="number" id="inputLastInteraction" value="5" min="0">
+                    </div>
+
+                </div>
+
+
+                <!-- PREDICT BUTTON -->
+                <button type="button" id="predictButton" class="predict-button" onclick="makePrediction()">
+                    🔮 Predict Customer
+                </button>
+
+
+                <!-- PREDICTION RESULT -->
+                <div id="predictionResult" class="prediction-result">
+                    <div class="result-box">
+                        <h3>Prediction Result</h3>
+                        <p>Enter customer information and click <strong>Predict Customer</strong>.</p>
+                    </div>
+                </div>
+
+
+                <!-- FEEDBACK SECTION -->
+                <div id="feedbackSection" class="feedback-section" style="display: none;">
+
+                    <h3>Actual Customer Outcome</h3>
+
+                    <p>After knowing the actual outcome, select the correct option below.</p>
+
+                    <div class="feedback-buttons">
+                        <button type="button" class="stay-button" onclick="submitFeedback(0)">
+                            🟢 Customer Stayed
+                        </button>
+                        <button type="button" class="churn-button" onclick="submitFeedback(1)">
+                            🔴 Customer Churned
+                        </button>
+                    </div>
+
+                    <div id="feedbackResult"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MODEL PERFORMANCE -->
+        <section class="panel">
+
+            <h2>Model Performance</h2>
+
+            <div class="performance-grid">
+
+                <div class="performance-card">
+                    <span>Accuracy</span>
+                    <strong id="accuracy">0%</strong>
+                </div>
+
+                <div class="performance-card">
+                    <span>Precision</span>
+                    <strong id="precision">0%</strong>
+                </div>
+
+                <div class="performance-card">
+                    <span>Recall</span>
+                    <strong id="recall">0%</strong>
+                </div>
+
+                <div class="performance-card">
+                    <span>F1-Score</span>
+                    <strong id="f1Score">0%</strong>
+                </div>
+
+            </div>
+
+            <p id="feedbackCount">Feedback records: 0</p>
+
+            <div id="performanceStatus">Checking model performance...</div>
+
+        </section>
+
+    </div>
+
+
+</div>
+
+
+<!-- ==========================================
+     TAB SWITCH LOGIC
+========================================== -->
+
+<script>
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-panel').forEach(function (panel) {
+        panel.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(function (btn) {
+        btn.classList.remove('active');
+    });
+
+    document.getElementById('tab-' + tabName).classList.add('active');
+    document.querySelector('.tab-btn[data-tab="' + tabName + '"]').classList.add('active');
+}
+</script>
+
+<!-- ==========================================
+     JAVASCRIPT (unchanged logic)
+========================================== -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
